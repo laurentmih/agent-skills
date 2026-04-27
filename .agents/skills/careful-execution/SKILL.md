@@ -1,6 +1,7 @@
 ---
 name: careful-execution
 description: Executes a project plan defined in a todo file section-by-section. Requires explicit user approval before starting and after completing each section to ensure precision and synchronization.
+disable-model-invocation: true
 ---
 
 # Careful Execution

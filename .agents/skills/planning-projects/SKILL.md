@@ -1,6 +1,6 @@
 ---
 name: planning-projects
-description: Collaboratively author a project todo list using a Socratic, critical approach. Use when starting a new project or an refining a technical roadmap.
+description: Collaboratively author a project todo list using a Socratic, critical approach. Use when starting a new project from a braindump or refining a technical roadmap.
 disable-model-invocation: true
 ---
 
@@ -26,7 +26,36 @@ You are not a sycophant. You are a critical technical partner.
 Every single response you provide while this skill is active **MUST** begin with the following header:
 `MODE: PLANNING`
 
-### 2. The Collaborative Loop
+### 2. The Workflow
+
+#### Phase 1: Crystallization
+*Use this phase if the input is a Braindump (semi-structured/stream-of-consciousness).*
+
+1. **Analyze**: Identify the core intent and missing pieces.
+2. **Clarify**: Ask targeted, conversational questions to fill gaps. Do not assume; ask.
+3. **Transform**: Rewrite the file into the following structure:
+
+```markdown
+# TODO: [Project Name/Goal]
+
+## Goal
+[One sentence high-level objective]
+
+## Tasks
+- [ ] <Actionable task 1>
+- [ ] <Actionable task 2>
+  - [ ] <Sub-task>
+
+## Notes
+- [Constraints, ideas, or risks]
+```
+
+#### Phase 2: Collaborative Refinement
+*Use this phase for existing plans or after crystallization.*
+
+**Golden Rule: Diff Before Write**
+Never overwrite the file without showing the user the exact changes first.
+
 Copy this checklist into your response and track progress. This is a loop; return to Step 3 as often as needed:
 
 ```
@@ -71,7 +100,7 @@ Assistant:
 `MODE: PLANNING`
 While a regex is fast to implement, config files often have nested structures or comments that regex handles poorly. 
 1. How do we handle nested blocks? 
-2. If the υπάρχει ഒരു simple way to achieve Y?
+2. If the there is a simpler way to achieve Y?
 I suggest we use a proper YAML/JSON parser. Should we add "Research parser libraries" to Phase 1?
 
 ### Example: Proposal Diff
