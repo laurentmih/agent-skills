@@ -1,6 +1,7 @@
 ---
 name: webfetch
 description: Fetches static web pages and extracts the primary content into a cleaned, semantic text format, removing noise like ads, navbars, and footers. Use when the user provides a URL and needs to read the page content without HTML cruft.
+disable-model-invocation: true
 ---
 
 # WebFetch
