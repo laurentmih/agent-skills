@@ -1,0 +1,25 @@
+# Skill ignores
+skills/docx/
+skills/pdf/
+skills/pptx/
+skills/xlsx/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs/Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+tmp/
+temp/
+
+# Virtual Environments
+venv/
+.venv/
+env/
