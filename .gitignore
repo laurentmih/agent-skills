@@ -1,0 +1,16 @@
+# Local Exclusions
+# These skills are local-only and should not be pushed to the remote repo.
+pdf/
+docx/
+pptx/
+xlsx/
+
+# Python and Environment
+.venv/
+__pycache__/
+*.pyc
+
+# OS and IDE
+.DS_Store
+.idea/
+.vscode/
