@@ -17,6 +17,7 @@ MAX_SKILL_MD_LINES = 500
 TOC_THRESHOLD_LINES = 100
 MAX_HIERARCHY_DEPTH = 2
 TEMPORAL_PATTERN = r'202[0-9]|v\d+\.\d+'
+EMOJI_PATTERN = r'[\U00010000-\U0010ffff]'
 
 def lint_skill(skill_dir):
     skill_path = Path(skill_dir)
@@ -93,6 +94,10 @@ def lint_skill(skill_dir):
             # Rule: Stability (Temporal patterns)
             if re.search(TEMPORAL_PATTERN, content):
                 errors.append(f"❌ [Stability] File '{md_file.relative_to(skill_path)}' contains temporal patterns (dates/versions).")
+
+            # Rule: Emojis/Non-BMP symbols
+            if re.search(EMOJI_PATTERN, content):
+                errors.append(f"❌ [Voice] File '{md_file.relative_to(skill_path)}' contains emojis or non-standard symbols (forbidden).")
 
         except Exception as e:
             errors.append(f"❌ [Documentation] Failed to analyze {md_file.relative_to(skill_path)}: {e}")
