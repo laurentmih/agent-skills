@@ -83,6 +83,23 @@ def lint_skill(skill_dir):
             if '\\' in content:
                 errors.append(f"❌ [Pathing] File '{md_file.relative_to(skill_path)}' contains backslashes (forbidden in documentation).")
 
+            # Rule: Cross-Reference Validation
+            # Find paths in [link](path) or `path`
+            potential_paths = re.findall(r'\[.*?\]\((.*?)\)|`([^`\s]+/[^`\s]+)`', content)
+            for link, backtick in potential_paths:
+                path_str = link or backtick
+                if path_str and not path_str.startswith(('http', '#', 'mailto')):
+                    # Remove query params or fragments from markdown links
+                    clean_path = path_str.split('#')[0].split('?')[0]
+                    # Resolve path relative to the current md_file
+                    target_path = (md_file.parent / clean_path).resolve()
+                    # Check if target is within the skill directory and exists
+                    try:
+                        if not target_path.exists():
+                            errors.append(f"❌ [Integrity] File '{md_file.relative_to(skill_path)}' references a missing path: '{path_str}'")
+                    except Exception:
+                        errors.append(f"❌ [Integrity] File '{md_file.relative_to(skill_path)}' has an invalid path reference: '{path_str}'")
+
             # Rule: TOC requirement
             if len(lines) > TOC_THRESHOLD_LINES:
                 header_chunk = "\n".join(lines[:50])
@@ -102,7 +119,19 @@ def lint_skill(skill_dir):
         except Exception as e:
             errors.append(f"❌ [Documentation] Failed to analyze {md_file.relative_to(skill_path)}: {e}")
 
-    # 4. Warnings (Vague adjectives and Fluff) - MD only
+    # 4. Portability Checks (All Files)
+    for file in skill_path.rglob('*'):
+        if file.is_dir():
+            continue
+        try:
+            content = file.read_text(errors='ignore')
+            relative_path = file.relative_to(skill_path)
+            if '/home/' in content:
+                errors.append(f"❌ [Portability] File '{relative_path}' contains an absolute path starting with '/home/'. Use relative paths instead.")
+        except Exception:
+            pass
+
+    # 5. Warnings (Vague adjectives and Fluff) - MD only
     for md_file in skill_path.rglob('*.md'):
         try:
             content = md_file.read_text(errors='ignore')
