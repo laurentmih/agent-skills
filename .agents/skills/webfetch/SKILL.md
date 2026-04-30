@@ -11,12 +11,12 @@ A utility for extracting the "meat" of a webpage for LLM consumption.
 ## Execution Requirement
 
 **CRITICAL: Do NOT run this script using `python3`.** 
-The script is configured with a localized virtual environment via its shebang. Running it with `python3` will bypass the environment and cause a `ModuleNotFoundError`.
+The script requires a localized virtual environment. Use the provided wrapper script to ensure the correct environment is used.
 
-Execute the script directly as a binary:
+Execute the skill directly as a binary:
 
 ```bash
-.agents/skills/webfetch/webfetch.py <url>
+.agents/skills/webfetch/scripts/webfetch <url>
 ```
 
 
