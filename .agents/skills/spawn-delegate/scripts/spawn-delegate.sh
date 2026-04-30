@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# vanilla-pi.sh - Spawn an isolated, ephemeral pi instance.
+# spawn-delegate.sh - Spawn an isolated, ephemeral pi instance.
 
 # Defaults and State
 SESSIONS_LOGGING=false
@@ -50,7 +50,7 @@ fi
 
 # Directory Setup
 if [[ -z "$WORK_DIR" ]]; then
-  WORK_DIR=$(mktemp -d /tmp/pi-vanilla.XXXXXX)
+  WORK_DIR=$(mktemp -d /tmp/pi-delegate.XXXXXX)
   CREATED_BY_SCRIPT=true
 else
   mkdir -p "$WORK_DIR"
