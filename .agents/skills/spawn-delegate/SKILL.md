@@ -1,51 +1,44 @@
 ---
 name: spawn-delegate
-description: Spawns isolated sub-agents with specialized personas for critical reviews or domain-specific tasks. Use this to obtain a dedicated critic, perform specialized analysis, or isolate complex prompts without polluting the primary session's context.
-disable-model-invocation: false
+description: Spawns an isolated, ephemeral pi instance to verify commands, test prompts, or run tasks in a clean-room environment without polluting the current workspace or session history.
+disable-model-invocation: true
 ---
 
-# Delegating Tasks
+# Spawn delegate
 
-This skill enables the delegation of tasks to isolated sub-agents. Execution occurs in a temporary environment to prevent persona leakage and context pollution, while maintaining workspace access.
+Use this skill when you need to "verify in a clean environment," "test a prompt in isolation," or run a task "without the baggage" of the current project.
 
-## Technical Specification
+## Usage
 
-### Execution Mechanism
-- **Script**: `/home/piuser/workspace/.agents/skills/delegate/scripts/invoke.sh`
-- **Validation Script**: `/home/piuser/workspace/.agents/skills/delegate/scripts/validate-delegate.sh`
-- **Pathing Utility**: `/home/piuser/workspace/.agents/skills/delegate/scripts/absolutize.sh`
-- **Persona Store**: `/home/piuser/workspace/.agents/skills/delegate/personas/`
-- **Style File**: `/home/piuser/workspace/.agents/skills/delegate/STYLE.md`
-- **Examples**: `/home/piuser/workspace/.agents/skills/delegate/EXAMPLES.md`
-- **Style Injection**: Global styles are injected automatically by the invocation script.
+Execute the vanilla instance using the helper script in this skill's directory:
+`./scripts/spawn-delegate.sh`
 
-### Absolute Pathing Requirement
-Sub-agents use absolute paths. All files referenced in the task prompt MUST use absolute paths (e.g., `/home/piuser/workspace/...`).
+### Interface
 
-## Operational Workflow
+| Flag | Description |
+| :--- | :--- |
+| `--command <msg>` | **Required**. The prompt/command to send to the vanilla instance. |
+| `--context-dir <path>` | Execute in `<path>`. Enables context discovery (loads `AGENTS.md` in that folder). |
+| `--log` | Enables session logging (removes ephemeral mode). |
+| `--system-prompt <text>` | Sets a custom system prompt. |
+| `--default-system-prompt` | Uses `pi`'s internal default system prompt. |
 
-When delegating a task, copy this checklist into your response to track progress:
+## Operational Guidelines
 
-- [ ] **Step 1: Persona Selection**. Run `ls /home/piuser/workspace/.agents/skills/delegate/personas/`.
-    - **Discovery**: For larger libraries, use `grep` or `find` to locate specialized personas.
-    - **Lifecycle**: Prefix temporary personas with `tmp_` and delete them after task completion.
-- [ ] **Step 2: Persona Alignment**. 
-    - Use an existing persona or create a new one in `/home/piuser/workspace/.agents/skills/delegate/personas/`.
-    - **Validation**: Use `/home/piuser/workspace/.agents/skills/delegate/personas/persona-template.md` for guidance.
-- [ ] **Step 3: Invocation**. 
-    - Review `/home/piuser/workspace/.agents/skills/delegate/EXAMPLES.md` for prompt structure guidelines.
-    - Construct the prompt in a file in `/home/piuser/workspace/.agents/delegations/`.
-    - **Requirement**: Include a "Success Criteria" section and a "Known Assumptions" section. 
-    - **Verification**: Define a machine-verifiable method (e.g., a script or a specific format) in the Success Criteria.
-    - **Pathing**: Use `/home/piuser/workspace/.agents/skills/delegate/scripts/absolutize.sh [prompt_file]` to ensure all paths are absolute.
-    - **Validation**: Execute `/home/piuser/workspace/.agents/skills/delegate/scripts/validate-delegate.sh [persona_path] [prompt_file_path]`.
-    - **Execution**: Execute `/home/piuser/workspace/.agents/skills/delegate/scripts/invoke.sh [persona_path] [prompt_file_path]`.
-- [ ] **Step 4: Validation & Iteration**. 
-    - Execute the verification method defined in the Success Criteria.
-    - Refine the prompt and re-invoke if any criterion is not met.
-- [ ] **Step 5: Cleanup**. Delete any `tmp_` personas used.
+1. **Clean Room Verification**: By default, the instance is isolated with the following constraints:
+   - No project context (`-nc`).
+   - No session history (`--no-session`).
+   - Empty system prompt (`--system-prompt ""`).
+   - Runs in a random `/tmp` directory.
+2. **Seeding**: To seed the environment, create a directory in `/tmp`, populate it with necessary files/`AGENTS.md`, and pass it via `--context-dir`.
+3. **Artifact Inspection**: Check the "Sandbox status" in the output. If the directory was preserved, you can `read` the files in that directory to inspect the output of the vanilla run.
+4. **Debugging**: If a run returns a non-zero exit code or output that does not match expectations, re-run with --log
 
-## Failure Recovery
-- **Validation Error**: Fix the paths or file content as indicated by `validate-delegate.sh`.
-- **Persona Mismatch**: Refine the persona file in `personas/` and re-invoke.
-- **Permission Error**: Ensure all files are within the workspace.
+## Example Calls
+
+- **Basic test**: 
+  `./scripts/spawn-delegate.sh --command "List files in current directory"`
+- **Testing a system prompt**: 
+  `./scripts/spawn-delegate.sh --command "Hello" --system-prompt "You are a helpful cat."`
+- **Seeded verification**: 
+  `./scripts/spawn-delegate.sh --command "Check the config" --context-dir /tmp/seed-config`
