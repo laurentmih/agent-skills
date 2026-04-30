@@ -3,7 +3,7 @@
 # Only converts paths that look like they are within the workspace.
 
 INPUT_FILE=$1
-WORKSPACE_ROOT="/home/piuser/workspace"
+WORKSPACE_ROOT="/home/piuser/workspace/pi-lab"
 
 if [ -z "$INPUT_FILE" ] || [ ! -f "$INPUT_FILE" ]; then
     echo "Error: Valid input file required."
@@ -14,10 +14,10 @@ fi
 # Use sed to replace paths that start with ./ or ../ or are just relative to workspace
 # This is a simplified version. We'll focus on common relative patterns.
 
-# Convert ./path to /home/piuser/workspace/path
+# Convert ./path to /home/piuser/workspace/pi-lab/path
 sed -i "s|\./|$WORKSPACE_ROOT/|g" "$INPUT_FILE"
 
-# Convert ../.agents/ to /home/piuser/workspace/.agents/ (assuming 1 level up from a skill dir)
+# Convert ../.agents/ to /home/piuser/workspace/pi-lab/.agents/ (assuming 1 level up from a skill dir)
 # This is tricky because we don't know where we are. 
 # But since most skills are in .agents/skills/X, ../ is usually .agents/skills/
 # Better approach: search for known relative roots.

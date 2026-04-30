@@ -21,12 +21,12 @@ if [ ! -f "$PROMPT_PATH" ]; then
 fi
 
 # Check if paths are absolute
-if [[ "$PERSONA_PATH" != /home/piuser/workspace/* ]]; then
+if [[ "$PERSONA_PATH" != /home/piuser/workspace/pi-lab/* ]]; then
     echo "Error: Persona path must be absolute and within the workspace."
     exit 1
 fi
 
-if [[ "$PROMPT_PATH" != /home/piuser/workspace/* ]]; then
+if [[ "$PROMPT_PATH" != /home/piuser/workspace/pi-lab/* ]]; then
     echo "Error: Prompt path must be absolute and within the workspace."
     exit 1
 fi
@@ -46,7 +46,8 @@ fi
 
 # Check for relative paths within the prompt
 # This looks for patterns that look like paths (containing /) but don't start with /
-RELATIVE_PATHS=$(grep -oE '[^ ]+/[^ ]+' "$PROMPT_PATH" | grep -v '^/')
+# We exclude common score patterns like (X/10) or 8/10.
+RELATIVE_PATHS=$(grep -oE '[^ ]+/[^ ]+' "$PROMPT_PATH" | grep -v '^/' | grep -vE '^[0-9X/()]+$')
 
 if [ -n "$RELATIVE_PATHS" ]; then
     echo "Error: Relative paths detected in prompt. All paths must be absolute."

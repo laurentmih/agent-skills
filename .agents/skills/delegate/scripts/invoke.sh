@@ -1,10 +1,10 @@
 #!/bin/bash
-# /home/piuser/workspace/.agents/skills/delegate/scripts/invoke.sh
+# /home/piuser/workspace/pi-lab/.agents/skills/delegate/scripts/invoke.sh
 
 PERSONA_FILE=$1
 PROMPT_INPUT=$2
 
-WORKSPACE_ROOT="/home/piuser/workspace"
+WORKSPACE_ROOT="/home/piuser/workspace/pi-lab"
 STYLE_FILE="$WORKSPACE_ROOT/.agents/skills/delegate/STYLE.md"
 
 if [ ! -f "$PERSONA_FILE" ]; then

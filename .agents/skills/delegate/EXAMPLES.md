@@ -1,10 +1,10 @@
 # Example Delegation Cycle
 
 ## 1. Persona Selection
-Persona: `/home/piuser/workspace/.agents/skills/delegate/personas/critic.md`
+Persona: `/home/piuser/workspace/pi-lab/.agents/skills/delegate/personas/critic.md`
 
 ## 2. Prompt Construction
-File: `/home/piuser/workspace/.agents/delegations/audit-example.txt`
+File: `/home/piuser/workspace/pi-lab/.agents/delegations/audit-example.txt`
 Content:
 ```markdown
 # Task: Audit the 'delegate' skill
@@ -20,9 +20,9 @@ Content:
 
 ## 3. Validation & Invocation
 ```bash
-/home/piuser/workspace/.agents/skills/delegate/scripts/absolutize.sh /home/piuser/workspace/.agents/delegations/audit-example.txt
-/home/piuser/workspace/.agents/skills/delegate/scripts/validate-delegate.sh /home/piuser/workspace/.agents/skills/delegate/personas/critic.md /home/piuser/workspace/.agents/delegations/audit-example.txt
-/home/piuser/workspace/.agents/skills/delegate/scripts/invoke.sh /home/piuser/workspace/.agents/delegate/personas/critic.md /home/piuser/workspace/.agents/delegations/audit-example.txt
+/home/piuser/workspace/pi-lab/.agents/skills/delegate/scripts/absolutize.sh /home/piuser/workspace/pi-lab/.agents/delegations/audit-example.txt
+/home/piuser/workspace/pi-lab/.agents/skills/delegate/scripts/validate-delegate.sh /home/piuser/workspace/pi-lab/.agents/skills/delegate/personas/critic.md /home/piuser/workspace/pi-lab/.agents/delegations/audit-example.txt
+/home/piuser/workspace/pi-lab/.agents/skills/delegate/scripts/invoke.sh /home/piuser/workspace/pi-lab/.agents/skills/delegate/personas/critic.md /home/piuser/workspace/pi-lab/.agents/delegations/audit-example.txt
 ```
 
 ## 4. Verification
